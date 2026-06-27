@@ -11,3 +11,5 @@ import joi  from "joi"
       password: joi.string().min(8).required(),
         
     })
+
+  

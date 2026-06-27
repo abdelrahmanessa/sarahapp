@@ -9,6 +9,9 @@ const adminsignture=process.env.ADMINSIGNTURE
 const usersignture=process.env.USERSIGNTURE
 const refreshUser= process.env.REFRISHUSERSIGNTURE
 const refreshAdmin=process.env.REFRISHADMINSIGNTURE
+const accountgmail=process.env.accountgmail
+const accountpasswordgmail=process.env.PASSWORDACCOUNTGMAIL
+const urlserver=process.env.URLSERVER
 export const env={
     port,
     mood,
@@ -17,5 +20,10 @@ export const env={
     adminsignture,
     usersignture,
     refreshAdmin,
-    refreshUser
+    refreshUser,
+    accountgmail,
+    accountpasswordgmail,
+    urlserver
+
+  
 }

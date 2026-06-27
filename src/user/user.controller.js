@@ -3,8 +3,7 @@ import { getuserdata } from "./user.services.js";
 import { auth } from "../common/middleware/auth.js";
 import { correctresponce } from "../common/responce/correct.responce.js";
 import { updatedata } from "./user.services.js";
-import { upload } from "../common/middleware/multer.js";
-
+import { uploads } from "../common/middleware/multer.js";
 const router =Router()
 router.get('/getuserid',auth,async(req,res)=>{
 let id=req.user.id
@@ -15,10 +14,11 @@ console.log(id);
 
 })
 
-router.put('/updateuser',auth, async(req,res)=>{
+router.put('/updateuser',auth,uploads().single('coverimage'), async(req,res)=>{
+let image=req.file
 let id =req.user.id;
 let data= req.body;
-let updateduser= await updatedata(id,data);
+let updateduser= await updatedata(id,data,image);
      correctresponce({res,data:updateduser,status:200,message:"the userdata is updated correctly"})
 
 }

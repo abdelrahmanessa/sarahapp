@@ -27,6 +27,13 @@ const userSchema = mongoose.Schema({
     role:{
         type:Number,
         default:0
+    },
+    isverified:{
+       type:Boolean,
+       default:false
+    },
+    otp:{
+        type: String,
     }
 })
 const userModel = mongoose.model("users", userSchema);

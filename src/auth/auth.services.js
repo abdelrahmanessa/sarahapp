@@ -4,6 +4,7 @@ import { Notfound,Badrequest } from "../common/responce/error.responce.js"
 import { generatetoken } from "../common/middleware/auth.js"
 import { correctresponce } from "../common/responce/correct.responce.js"
 import { generatetokenacess } from "../common/middleware/auth.js"
+import { sendemail } from "../common/ultlis/sendemail.js"
 import joi  from "joi"
 export const createaccount =async(data)=>{
     let {name,email,password,uniquename}=data  
@@ -14,10 +15,16 @@ if(existemail){
     return ({message:"email is existed",data:existemail})
 }
 if(!existemail){
+         const otp=Math.floor(300000 + Math.random()*9000000);
     let adddata= await userModel.insertOne({
-        name,email,password:hashpassword,existemail,uniquename
+        name,email,password:hashpassword,existemail,uniquename,otp
     })
     if(adddata){
+  await sendemail({
+    to:email,
+    subject:'to verify your account',
+    html:`your otp is ${otp} to verify your account`
+  })
         return ({message:"the data is inserted correctly",data:adddata})
     }
 }
@@ -42,8 +49,17 @@ return({message:"the login is corretlt",acesstoken,refreshtoken})
     
 }
 }
-
-
+export const veriyaccount=async(data)=>{
+let {email,otp}=data
+let existedemail=await userModel.findOne({email})
+if(existedemail.otp!=otp){
+    Badrequest({message:'the  otp is wrong'})
+}
+existedemail.isverified=true;
+existedemail.otp=null
+await existedemail.save();
+return existedemail
+}
 
  export const generateAcessToken =async(refroken,host)=>{
 

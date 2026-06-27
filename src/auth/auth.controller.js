@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createaccount,loginuser } from "./auth.services.js";
+import { createaccount,loginuser,veriyaccount } from "./auth.services.js";
 import { correctresponce } from "../common/responce/correct.responce.js";
 import { auth } from "../common/middleware/auth.js";
 import { generateAcessToken } from "./auth.services.js";
@@ -17,7 +17,12 @@ router.post('/login',validator(loginschema),async(req,res)=>{
     correctresponce({res,data:login,status:200,message:"good"})
 
 })
+router.post('/verify',async(req,res)=>{
 
+    let data= await veriyaccount(req.body)
+        correctresponce({res,data,status:200,message:"your veryfiy is done"})
+
+})
 
 
 router.get('/getacesstoken',async(req,res)=>{
